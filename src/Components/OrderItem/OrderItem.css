@@ -6,3 +6,8 @@
     margin: 5px;
     padding: 5px;
 }
+.itemInfoBlock{
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+}

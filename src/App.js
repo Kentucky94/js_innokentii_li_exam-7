@@ -91,6 +91,8 @@ class App extends Component {
         const orderItems = this.state.menuItems.map(item => {
                 const itemInfo = menu.find(menuItem => menuItem.name === item.name);
 
+                const itemTotalPrice = item.count * itemInfo.price;
+
                 let orderItem;
 
                 if(item.count > 0){
@@ -98,7 +100,7 @@ class App extends Component {
                         key={nanoid()}
                         name={item.name}
                         count={item.count}
-                        price={itemInfo.price}
+                        price={itemTotalPrice}
                         delete={() => this.deleteItem(item.name)}
                     />
                 }
