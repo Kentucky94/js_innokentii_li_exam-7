@@ -32,12 +32,13 @@ class App extends Component {
             {name: 'Tea', count: 0},
             {name: 'Cola', count: 0},
         ],
+        total: 0,
     };
 
     addItem = itemName => {
         const menuItems = [...this.state.menuItems];
         const itemIndex = menuItems.findIndex(item => item.name === itemName);
-        const menuItem = menuItems[itemIndex];
+        const menuItem = {...menuItems[itemIndex]};
 
         menuItem.count++;
 
@@ -49,7 +50,7 @@ class App extends Component {
     deleteItem = itemName => {
         const menuItems = [...this.state.menuItems];
         const itemIndex = menuItems.findIndex(item => item.name === itemName);
-        const menuItem = menuItems[itemIndex];
+        const menuItem = {...menuItems[itemIndex]};
 
         if(menuItem.count > 0){
             menuItem.count--;
@@ -58,6 +59,24 @@ class App extends Component {
         menuItems[itemIndex] = menuItem;
 
         this.setState({menuItems});
+    };
+
+    getTotal = () => {
+        let total = this.state.total;
+
+        this.state.menuItems.forEach(item => {
+            const count = item.count;
+
+            const price = menu.find(menuItem => menuItem.name === item.name).price;
+
+            total += count * price;
+        });
+
+        if(total > 0){
+            return 'Total price: ' +  total;
+        }else{
+            return 'Your order is empty! Please add some items!';
+        }
     };
 
     render() {
@@ -72,7 +91,7 @@ class App extends Component {
         const orderItems = this.state.menuItems.map(item => {
                 const itemInfo = menu.find(menuItem => menuItem.name === item.name);
 
-                let orderItem = '';
+                let orderItem;
 
                 if(item.count > 0){
                     orderItem =  <OrderItem
@@ -92,6 +111,7 @@ class App extends Component {
             <div className="App container">
                 <div className="window leftWindow">
                     {orderItems}
+                    <p>{this.getTotal()}</p>
                 </div>
                 <div className="window rightWindow">
                     {menuItems}
